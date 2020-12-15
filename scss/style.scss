@@ -1,0 +1,65 @@
+@import "variables";
+@import "resets";
+
+@function weight($weight-name) {
+  @return map-get($map: $font-weights, $key: $weight-name);
+}
+
+@mixin flexCenter($direction) {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: $direction;
+}
+
+@mixin theme($light-theme: true) {
+  @if $light-theme {
+    background: lighten($primary-color, 80%);
+    color: darken($text-color, 80%);
+  }
+}
+
+@mixin mobile {
+  @media (max-width: $mobile) {
+    @content;
+  }
+}
+
+body {
+  background: $primary-color;
+  color: $text-color;
+  font-weight: map-get($map: $font-weights, $key: bold);
+}
+
+.main {
+  @include flexCenter(row);
+  width: 80% - 40%;
+  width: calc(80% - 400px);
+  //   width: 80% - 400px; // Throws Error - cannot mix types/units
+  width: 80%;
+  margin: 0 auto;
+
+  #{&}__paragraph1 {
+    font-weight: weight(regular);
+
+    &:hover {
+      color: pink;
+    }
+  }
+
+  #{&}__paragraph2 {
+    @extend .main__paragraph1;
+
+    &:hover {
+      color: $accent-color;
+    }
+  }
+
+  @include mobile {
+    flex-direction: column;
+  }
+}
+
+.light {
+  @include theme(true);
+}
